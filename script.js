@@ -24,7 +24,8 @@ function move(key) {
     const head = state.snake.at(-1)
     const shift = shifts[key]
 
-    state.snake.push([head[0] + shift[0], head[1] + shift[1]])
+
+    state.snake.push([(head[0] + shift[0] + 10) % 10, (head[1] + shift[1] + 10) % 10])
     state.snake.shift()
 }
 
@@ -35,8 +36,8 @@ function opposite(direction) {
     if (direction == 'right') return 'left'
 }
 
-function isMovePossible(key) {
-    return key != opposite(state.direction)
+function isMovePossible(direction) {
+    return direction != opposite(state.direction)
 }
 
 function handleKey(e) {
