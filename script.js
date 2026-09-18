@@ -4,6 +4,7 @@ const tbody = document.querySelector('tbody')
 
 const ROWS = 10
 const COLS = 10
+const stepInterval = 500
 const arrows = ['right', 'down', 'left', 'up']
 const shifts = {
     right: [1, 0],
@@ -20,13 +21,37 @@ const state = {
 onkeydown = handleKey
 renderGameZone()
 
+setInterval(() => {
+    move(state.direction)
+    renderGameZone()
+}, stepInterval)
+
+function placeNewApple() {
+    const x = Math.floor(Math.random() * ROWS)
+    const y = Math.floor(Math.random() * COLS)
+
+    if (state.snake.some(coords => coords[0] == x && coords[1] == y)) {
+        placeNewApple()
+    } else {
+        state.apple = [x, y]
+    }
+}
+
 function move(key) {
-    const head = state.snake.at(-1)
+    let head = state.snake.at(-1)
     const shift = shifts[key]
 
+    head = [(head[0] + shift[0] + 10) % 10, (head[1] + shift[1] + 10) % 10]
 
-    state.snake.push([(head[0] + shift[0] + 10) % 10, (head[1] + shift[1] + 10) % 10])
-    state.snake.shift()
+    state.snake.push(head)
+
+    if (head[0] != state.apple[0] || head[1] != state.apple[1]) {
+        state.snake.shift()
+
+    } else {
+        placeNewApple()
+    }
+
 }
 
 function opposite(direction) {
@@ -42,7 +67,7 @@ function isMovePossible(direction) {
 
 function handleKey(e) {
     const key = e.key.slice(5).toLowerCase()
-    
+
     if (arrows.includes(key) && isMovePossible(key)) {
         state.direction = key
 
