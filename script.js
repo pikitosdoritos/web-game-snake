@@ -4,15 +4,42 @@ const tbody = document.querySelector('tbody')
 
 const ROWS = 10
 const COLS = 10
+const arrows = ['right', 'down', 'left', 'up']
+const shifts = {
+    right: [1, 0],
+    down: [0, 1],
+    left: [-1, 0],
+    up: [0, -1]
+}
 
 const state = {
     snake: [[0, 0], [1, 0], [2, 0], [3, 0]],
     apple: [9, 0],
 }
 
+onkeydown = handleKey
 renderGameZone()
 
+function move(key) {
+    const head = state.snake.at(-1)
+    const shift = shifts[key]
+
+    state.snake.push([head[0] + shift[0], head[1] + shift[1]])
+    state.snake.shift()
+}
+
+function handleKey(e) {
+    const key = e.key.slice(5).toLowerCase()
+
+    if (arrows.includes(key)) {
+        move(key)
+        renderGameZone()
+    }
+}
+
 function renderGameZone() {
+    tbody.innerHTML = ''
+    
     for (let i = 0; i < ROWS; i++) {
         const row = document.createElement('tr')
 
