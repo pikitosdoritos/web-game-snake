@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+}
+
+h1 {
+    text-align: center;
+
+}
+
+table {
+    margin: auto;
+    border-collapse: collapse;
+
+    td {
+        width: 40px;
+        height: 40px;
+    }
+
+    td::after {
+        display: block;
+        content: '';
+        width: 4px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background-color: cadetblue;
+        margin: auto;
+
+    }
+
+    .snake::after {
+        width: 14px;
+        background-color: cadetblue;
+    }
+
+    .apple::after {
+        width: 14px;
+        background-color: red;
+    }
+}
