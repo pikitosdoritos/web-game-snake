@@ -11,10 +11,10 @@ const shifts = {
     left: [-1, 0],
     up: [0, -1]
 }
-
 const state = {
     snake: [[0, 0], [1, 0], [2, 0], [3, 0]],
     apple: [9, 0],
+    direction: 'right',
 }
 
 onkeydown = handleKey
@@ -28,10 +28,23 @@ function move(key) {
     state.snake.shift()
 }
 
+function opposite(direction) {
+    if (direction == 'up') return 'down'
+    if (direction == 'down') return 'up'
+    if (direction == 'left') return 'right'
+    if (direction == 'right') return 'left'
+}
+
+function isMovePossible(key) {
+    return key != opposite(state.direction)
+}
+
 function handleKey(e) {
     const key = e.key.slice(5).toLowerCase()
+    
+    if (arrows.includes(key) && isMovePossible(key)) {
+        state.direction = key
 
-    if (arrows.includes(key)) {
         move(key)
         renderGameZone()
     }
@@ -39,7 +52,7 @@ function handleKey(e) {
 
 function renderGameZone() {
     tbody.innerHTML = ''
-    
+
     for (let i = 0; i < ROWS; i++) {
         const row = document.createElement('tr')
 
