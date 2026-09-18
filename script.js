@@ -99,4 +99,3 @@ function renderGameZone() {
     table.append(tbody)
     body.append(table)
 }
-
